@@ -8,7 +8,7 @@ api_final_yatube - это API для проекта Yatube
 
 Как запустить проект:
 Клонировать репозиторий и перейти в него в командной строке:
-git clone https://git@github.com:AlineOdr/api_final_yatube.git
+git clone git@github.com:AlineOdr/api_final_yatube.git
 
 Cоздать и активировать виртуальное окружение:
 python3 -m venv venv
