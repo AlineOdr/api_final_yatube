@@ -1,6 +1,8 @@
-from posts.models import Comment, Follow, Group, Post, User
 from rest_framework import serializers, validators
 from rest_framework.relations import SlugRelatedField
+
+from posts.models import Comment, Follow, Group, Post, User
+#    странно, но isort исправляет именно так как было
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -11,9 +13,10 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
+    #    здесь я ориентировалась на свои предыдущие проекты
 
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'text', 'author', 'image', 'pub_date', 'group')
         model = Post
 
 
@@ -23,7 +26,7 @@ class CommentSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'author', 'post', 'text', 'created')
         model = Comment
         read_only_fields = ('post',)
 
@@ -36,7 +39,7 @@ class FollowSerializer(serializers.ModelSerializer):
         queryset=User.objects.all(), slug_field='username')
 
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'user', 'following',)
         model = Follow
         validators = (validators.UniqueTogetherValidator(
                       queryset=Follow.objects.all(),
@@ -45,7 +48,7 @@ class FollowSerializer(serializers.ModelSerializer):
                       ),)
 
     def validate(self, data):
-        if self.context['request'].user == data['following']:
+        if self.context.get('request').user == data['following']:
             raise serializers.ValidationError(
                 'Вы не можете быть подписаны на самого себя!')
         return data

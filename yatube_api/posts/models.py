@@ -55,6 +55,9 @@ class Comment(models.Model):
         verbose_name = ('Комментарий')
         verbose_name_plural = ('Комментарии')
 
+    def __str__(self) -> str:
+        return self.text
+
 
 class Follow(models.Model):
     user = models.ForeignKey(
@@ -73,3 +76,11 @@ class Follow(models.Model):
     class Meta:
         verbose_name = ('Подписчик')
         verbose_name_plural = ('Подписчики')
+        constraints = [models.CheckConstraint(
+            check=~models.Q(following=models.F('user')),
+            name='cannot subscribe to yourself'),
+            models.UniqueConstraint(name='unique_subscribe',
+                                    fields=['user', 'following'],)]
+
+    def __str__(self):
+        return f'{self.user} подписан на {self.following}'
