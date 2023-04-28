@@ -11,6 +11,5 @@ router_version1.register(r'posts\/(?P<post_id>[^/.]+)\/comments',
                          CommentViewSet, basename='comment')
 urlpatterns = [
     path('v1/', include(router_version1.urls)),
-    path('v1/', include('djoser.urls')),
     path('v1/', include('djoser.urls.jwt')),
 ]

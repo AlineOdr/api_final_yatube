@@ -1,8 +1,6 @@
 from rest_framework import serializers, validators
-from rest_framework.relations import SlugRelatedField
 
 from posts.models import Comment, Follow, Group, Post, User
-#    странно, но isort исправляет именно так как было
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -12,8 +10,8 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = SlugRelatedField(slug_field='username', read_only=True)
-    #    здесь я ориентировалась на свои предыдущие проекты
+    author = serializers.SlugRelatedField(slug_field='username',
+                                          read_only=True)
 
     class Meta:
         fields = ('id', 'text', 'author', 'image', 'pub_date', 'group')
